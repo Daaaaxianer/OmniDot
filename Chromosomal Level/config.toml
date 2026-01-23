@@ -1,0 +1,214 @@
+#
+#        gene_show:
+#        "chr","tnew_name"
+#          1	  coca01g00001
+#
+#        gff: six column
+#        "chr","tnew_name","tpos_start","tpos_end","tchain","torder","told_name"
+#          1	  coca01g00001	   390	       1820	      -         1	 Cc01_g00010
+#
+#        lens: three line
+#        "chr",   "tpos",     "torder"
+#          1       23021474     1399
+#
+#        color_dates
+#        "tnew_name"   , "color"
+#        coca01g00001    #F09201
+#
+#        Collinearity
+#        # Alignment 1: score=1451 pvalue=0.2214 N=49 1&1 plus
+#        vivi01g00514 514 vivi01g00515 515 1
+#
+#        KS
+#        id1	id2	ka_NG86	ks_NG86	ka_YN00	ks_YN00
+#        vivi01g00514	vivi01g00515	0.0686	0.1182	0.0678	0.1258
+#        vivi01g00517	vivi01g00516	0.0796	0.137	0.0835	0.1197
+#        vivi01g00518	vivi01g00517	0.0278	0.0306	0.0299	0.0248
+
+#    gene_show = r"D:\Python_cod\vivi_coca_gene.gff"  # 写入collinearity下显示的基因名称的文件路径
+#    Collinearity_ks = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH_HCH.collinearity.ks"  # 写入collinearity.ks文件路径
+#    Collinearity = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH_HCH.collinearity"  # 写入collinearity文件路径
+#    blast_name = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH_HCH.blast"  # 写入blast文件路径
+#    blast_gff_1 = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH.new.gff"  # 写入collinearity,blast第1列的gff文件路径
+#    blast_gff_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH.new.gff"  # 写入collinearity,blast第2列的gff文件路径
+#    blast_lens_1 = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH.lens"  # 写入collinearity,blast第1列的lens文件路径
+#    blast_lens_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\HCH\HCH\HCH.lens"  # 写入collinearity,blast第2列的lens文件路径
+#    mods = "blast"  # "blast" "collinearity" 画blast 还是 collinearity
+#    mod = "torder"  # "torder"或"tpos"根据gff文件的 tpos 或 torder 画图 "torder" 根据基因在染色体总的基因上的相对顺序 "tpos" 根据基因在染色体上的真实位置
+#    name_1 = "H.chinensis"  # 第1列的物种名称
+#    name_2 = "H.chinensis"  # 第2列的物种名称
+#    name_3 = "one Vivi : Coca"#在mod_show=rate下需要填写
+#    name_4 = "one Coca : Vivi"#在mod_show=rate下需要填写
+#    collinearity_ks_mod = "False"  # "False" "True"   是否输入Collinearity_ks文件  False情况下只显示Collinearity点图无ks
+#    Ks = "False"  # "False" "True"是否显示ks的值      collinearity情况下
+#    ks_mod = "Median"  # "Average" 或 "Median"   "Average"显示ks的平均数"Median"显示ks的中位数       collinearity情况下
+#    name_id = "True"  # "True" "False" 是否去除物种自身比较时的对角线 (当并非是物种自身比较时 应为  "False"  )   collinearity情况下
+#    N = 5  # Alignment  ＞  几   就可以合并数据    collinearity情况下
+#    NSD = 10  # Alignment  ＞  几   就可以显示数据     collinearity情况下
+#    Distance = 250  # 合并数据的距离            collinearity情况下
+#    half = "False"  # "self_col_2" "False" "True" "self_blco_2"  "False" "True"是否单个物种为自身比对且画一半"self_col_2"为2个物种的自身比对且画一半,并合并 "self_blco_2"collinearity与blast分别画
+#    block = "False"  # 在collinearity 与  "self_col_2"情况下  "False" "True"  是否显示 block 的大小
+#    top_block = "False"  # block情况下  "False" "True"  是否突出显示最近的一次加倍 需要ks文件
+#    ks_dem_1 = 1.5  # Collinearity文件 top_block"True"情况下 分割最近的一次加倍的ks
+#    ks_dem_1_1=0.8
+#    ks_dem_2 = 1.8  # Collinearity_2文件 top_block"True"情况下 分割最近的一次加倍的ks
+#    ks_dem_2_2= 1.2
+#    pos = "bot_left"  # 显示在"bot_left" 左下   "bot_right" 右下  "top_left" 左上   "top_right"   右上
+#    mod_show = "nan"  # "rate" "tree" "density" "nan"        collinearity情况下"rate" 显示基因的比例  "tree"  显示特定基因的名称  "density"显示基因的密度  "nan" 都不显示   blast情况下 "tree" "density"
+#    bin_sizes = 20  # "density"显示基因的密度  定义分箱大小  默认单位为百万
+#    color_date = "False"  # "False" "True"是否有显示基因名称的连接线的颜色文件     tree情况下
+#    color_dates = 'D:\Python_cod\vivi_coca_c.gff'  # 写入"tree"下显示的基因名称对应颜色的文件路径
+#    wide = 400  # 显示的名称上下的距离差         collinearity情况下     tree情况下
+#    longs = 350  # 显示的名称左右的距离差         collinearity情况下     tree情况下
+#    name_1_4 = "B.hispida"  # 第1列的物种名称
+#    name_2_4 = "B.hispida"  # 第2列的物种名称
+#    Collinearity_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi_Bhi.collinearity"  # 写入collinearity.ks文件路径
+#    Collinearity_ks_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi_Bhi.collinearity.ks"  # 写入collinearity.ks文件路径
+#    blast_name_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi_Bhi.blast"  # 写入collinearity.ks文件路径
+#    blast_gff_1_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi.new.gff"  # 写入collinearity,blast第1列的gff文件路径
+#    blast_gff_2_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi.new.gff"  # 写入collinearity,blast第2列的gff文件路径
+#    blast_lens_1_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi.lens"  # 写入collinearity,blast第1列的lens文件路径
+#    blast_lens_2_2 = r"C:\Users\32097\Desktop\新建文件夹 (3)\Bhi\Bhi\Bhi.lens"  # 写入collinearity,blast第2列的lens文件路径
+#    posd = "bot_left"  # "bot_left"   "bot_right"
+
+[blast]
+half = "False"
+mods = "blast"
+mod = "torder"  # "torder"或"tpos"根据gff文件的 tpos 或 torder 画图 "torder" 根据基因在染色体总的基因上的相对顺序 "tpos" 根据基因在染色体上的真实位置
+blast_name = 'D:\Python_cod\vivi_coca.1e-5.blast'  # 写入blast文件路径
+blast_gff_1 = 'D:\Python_cod\vivi.new.gff'  # 写入collinearity,blast第1列的gff文件路径
+blast_gff_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入collinearity,blast第2列的gff文件路径
+blast_lens_1 = 'D:\Python_cod\blast文件\vivi.lens'  # 写入collinearity,blast第1列的lens文件路径
+blast_lens_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入collinearity,blast第2列的lens文件路径
+name_1 = "V.vinifera"  # 第1列的物种名称
+name_2 = "C.canephora"  # 第2列的物种名称
+mod_show = "nan"    # "tree" "density" "nan"   "nan" 都不显示   blast情况下 "tree" 显示特定基因的名称"density"显示基因的密度
+bin_sizes = 20  # "density"显示基因的密度  定义分箱大小  默认单位为百万
+wide = 400  # 显示的名称上下的距离差     tree情况下
+longs = 350  # 显示的名称左右的距离差     tree情况下
+color_date = "False"  # "False" "True"是否有显示基因名称的连接线的颜色文件     tree情况下
+gene_show = 'D:\Python_cod\vivi_coca_gene.gff'  # 写入"tree"下显示的基因名称的文件路径
+color_dates = 'D:\Python_cod\vivi_coca_c.gff'  # 写入"tree"下显示的基因名称对应颜色的文件路径     tree情况下
+savefile= 'graph39_11.png'   # 写入最后产生的图片路径
+
+[Collinearity]
+half = "False"
+mods = "collinearity"
+mod = "torder"  # "torder"或"tpos"根据gff文件的 tpos 或 torder 画图 "torder" 根据基因在染色体总的基因上的相对顺序 "tpos" 根据基因在染色体上的真实位置
+Collinearity = 'D:\Python_cod\vivi_coca.collinearity_new.txt'   # 写入collinearity文件路径
+blast_gff_1 = 'D:\Python_cod\vivi.new.gff'  # 写入collinearity,blast第1列的gff文件路径
+blast_gff_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入collinearity,blast第2列的gff文件路径
+blast_lens_1 = 'D:\Python_cod\blast文件\vivi.lens'  # 写入collinearity,blast第1列的lens文件路径
+blast_lens_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入collinearity,blast第2列的lens文件路径
+name_1 = "V.vinifera"  # 第1列的物种名称
+name_2 = "C.canephora"  # 第2列的物种名称
+mod_show = "nan"  #"rate""tree""density""nan"   "rate"显示基因的比例 "tree"显示特定基因的名称 "density"显示基因的密度 "nan"都不显示
+bin_sizes = 20  # "density"显示基因的密度  定义分箱大小  默认单位为百万
+name_3 = "one Vivi : Coca" #在mod_show=rate下需要填写显示基因的比例的名称
+name_4 = "one Coca : Vivi" #在mod_show=rate下需要填写显示基因的比例的名称
+gene_show = 'D:\Python_cod\vivi_coca_gene.gff'  # 写入"tree"下显示的基因名称的文件路径
+wide = 400  # 显示的名称上下的距离差     tree情况下
+longs = 350  # 显示的名称左右的距离差     tree情况下
+color_date = "False"  # "False" "True"是否有显示基因名称的连接线的颜色文件     tree情况下
+color_dates = 'D:\Python_cod\vivi_coca_c.gff'  # 写入"tree"下显示的基因名称对应颜色的文件路径
+collinearity_ks_mod = "True"  # "False" "True"   是否输入Collinearity_ks文件  False情况下只显示Collinearity点图无ks
+Collinearity_ks = 'D:\Python_cod\vivi_coca.collinearity.ks.txt'  # collinearity_ks_mod="True"情况下 写入collinearity.ks文件路径
+Ks = "True"  # "False" "True"是否显示ks的值
+ks_mod = "Median"  # "Average" 或 "Median"   "Average"显示ks的平均数"Median"显示ks的中位数
+name_id = "False"  # "True" "False" 是否去除物种自身比较时的对角线 (当并非是物种自身比较时 应为 "False" )
+N = 5  # Alignment  ＞  几   就可以合并此数据
+NSD = 10  # Alignment  ＞  几   就可以显示此数据
+Distance = 250  # 合并数据的距离 2个block的torder小于此距离就合并
+savefile= 'graph39_11.png'   # 写入最后产生的图片路径
+
+[blast_blast]
+half = "self_col_2"
+mods = "blast"
+mod = "torder"  # "torder"或"tpos"根据gff文件的 tpos 或 torder 画图 "torder" 根据基因在染色体总的基因上的相对顺序 "tpos" 根据基因在染色体上的真实位置
+blast_name = 'D:\Python_cod\vivi_coca.1e-5.blast'  # 写入blast文件路径
+blast_gff_1 = 'D:\Python_cod\vivi.new.gff'  # 写入collinearity,blast第1列的gff文件路径
+blast_gff_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入collinearity,blast第2列的gff文件路径
+blast_lens_1 = 'D:\Python_cod\blast文件\vivi.lens'  # 写入collinearity,blast第1列的lens文件路径
+blast_lens_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入collinearity,blast第2列的lens文件路径
+blast_name_2= 'D:\Python_cod\coca_coca.1e-5.blast'  # 写入第2个blast文件路径
+blast_gff_1_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入第2个blast第1列的gff文件路径
+blast_gff_2_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入第2个blast第2列的gff文件路径
+blast_lens_1_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入第2个blast第1列的lens文件路径
+blast_lens_2_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入第2个blast第2列的lens文件路径
+name_1 = "V.vinifera"  # 第1个blast第1列的物种名称
+name_2 = "C.canephora"  # 第1个blast第2列的物种名称
+name_1_4 = "B.hispida"  # 第2个blast第1列的物种名称
+name_2_4 = "B.hispida"  # 第2个blast第2列的物种名称
+posd = "bot_left"  # "bot_left"   "bot_right"图像的格式
+savefile= 'graph39_11.png'   # 写入最后产生的图片路径
+
+[Collinearity_Collinearity]
+half = "self_col_2"
+mods = "collinearity"
+mod = "torder"  # "torder"或"tpos"根据gff文件的 tpos 或 torder 画图 "torder" 根据基因在染色体总的基因上的相对顺序 "tpos" 根据基因在染色体上的真实位置
+Collinearity = 'D:\Python_cod\vivi_coca.collinearity_new.txt'   # 写入collinearity文件路径
+blast_gff_1 = 'D:\Python_cod\vivi.new.gff'  # 写入collinearity,blast第1列的gff文件路径
+blast_gff_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入collinearity,blast第2列的gff文件路径
+blast_lens_1 = 'D:\Python_cod\blast文件\vivi.lens'  # 写入collinearity,blast第1列的lens文件路径
+blast_lens_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入collinearity,blast第2列的lens文件路径
+Collinearity_2='D:\Python_cod\coca_coca.collinearity.txt'  # 写入collinearity.ks文件路径
+blast_gff_1_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入第2个写入collinearity第1列的gff文件路径
+blast_gff_2_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入第2个写入collinearity第2列的gff文件路径
+blast_lens_1_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入第2个写入collinearity第1列的lens文件路径
+blast_lens_2_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入第2个写入collinearity第2列的lens文件路径
+name_1 = "V.vinifera"  # 第1个blast第1列的物种名称
+name_2 = "C.canephora"  # 第1个blast第2列的物种名称
+name_1_4 = "B.hispida"  # 第2个blast第1列的物种名称
+name_2_4 = "B.hispida"  # 第2个blast第2列的物种名称
+posd = "bot_left"  # "bot_left"   "bot_right"图像的格式
+collinearity_ks_mod = "True"  # "False" "True"   是否输入Collinearity_ks文件  False情况下只显示Collinearity点图无ks
+Collinearity_ks = 'D:\Python_cod\vivi_coca.collinearity.ks.txt'  # collinearity_ks_mod="True"情况下 写入collinearity.ks文件路径
+Collinearity_ks_2= 'D:\Python_cod\coca_coca.collinearity.ks.txt'  # 写入collinearity.ks文件路径
+Ks = "False"  # "False" "True"是否显示ks的值
+ks_mod = "Median"  # "Average" 或 "Median"   "Average"显示ks的平均数"Median"显示ks的中位数
+name_id = "False"  # "True" "False" 是否去除物种自身比较时的对角线 (当并非是物种自身比较时 应为 "False" )
+N = 5  # Alignment  ＞  几   就可以合并此数据
+NSD = 10  # Alignment  ＞  几   就可以显示此数据
+Distance = 250  # 合并数据的距离 2个block的torder小于此距离就合并
+block = "True"  # "False" "True"  是否显示 block 的大小
+top_block = "True"  #在collinearity_ks_mod="True"且Ks="False" 情况下 "False" "True"  是否突出显示最近的一次加倍 需要ks文件
+ks_dem_1 = 1.5  # top_block "True"情况下 分割最近的一次加倍的ks的上限
+ks_dem_1_1=0.8  # top_block "True"情况下 分割最近的一次加倍的ks的下限
+ks_dem_2 = 1.8  #  top_block "True"情况下 分割最近的一次加倍的ks的上限
+ks_dem_2_2= 1.2 #  top_block "True"情况下 分割最近的一次加倍的ks的下限
+savefile= 'graph39_11.png'   # 写入最后产生的图片路径
+
+[blast_Collinearity]
+half = "self_blco_2"
+mods = "blast"
+mod = "torder"  # "torder"或"tpos"根据gff文件的 tpos 或 torder 画图 "torder" 根据基因在染色体总的基因上的相对顺序 "tpos" 根据基因在染色体上的真实位置
+blast_name = 'D:\Python_cod\coca_coca.1e-5.blast'  # 写入blast文件路径
+blast_gff_1 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入collinearity,blast第1列的gff文件路径
+blast_gff_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入collinearity,blast第2列的gff文件路径
+blast_lens_1 = 'D:\Python_cod\blast文件\coca.lens'  # 写入collinearity,blast第1列的lens文件路径
+blast_lens_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入collinearity,blast第2列的lens文件路径
+Collinearity_2='D:\Python_cod\coca_coca.collinearity.txt'  # 写入collinearity.ks文件路径
+blast_gff_1_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入第2个写入collinearity第1列的gff文件路径
+blast_gff_2_2 = 'D:\Python_cod\blast例子\Data\coca.new.gff'  # 写入第2个写入collinearity第2列的gff文件路径
+blast_lens_1_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入第2个写入collinearity第1列的lens文件路径
+blast_lens_2_2 = 'D:\Python_cod\blast文件\coca.lens'  # 写入第2个写入collinearity第2列的lens文件路径
+name_1 = "C.canephora"  # 第1个blast第1列的物种名称
+name_2 = "C.canephora"  # 第1个blast第2列的物种名称
+name_1_4 = "C.canephora"  # 第2个blast第1列的物种名称
+name_2_4 = "C.canephora"  # 第2个blast第2列的物种名称
+posd = "bot_left"  # "bot_left"   "bot_right"图像的格式
+collinearity_ks_mod = "False"  # "False" "True"   是否输入Collinearity_ks文件  False情况下只显示Collinearity点图无ks
+Collinearity_ks_2= 'D:\Python_cod\coca_coca.collinearity.ks.txt'  # collinearity_ks_mod="True"情况下 写入collinearity.ks文件路径
+Ks = "False"  # "False" "True"是否显示ks的值
+ks_mod = "Median"  # "Average" 或 "Median"   "Average"显示ks的平均数"Median"显示ks的中位数
+name_id = "True"  # "True" "False" 是否去除物种自身比较时的对角线 (当并非是物种自身比较时 应为 "False" )
+N = 5  # Alignment  ＞  几   就可以合并此数据
+NSD = 10  # Alignment  ＞  几   就可以显示此数据
+Distance = 250  # 合并数据的距离 2个block的torder小于此距离就合并
+block = "True"  # "False" "True"  是否显示 block 的大小
+top_block = "False"  #在collinearity_ks_mod="True"且Ks="False" 情况下 "False" "True"  是否突出显示最近的一次加倍 需要ks文件
+ks_dem_1 = 1.5  # top_block "True"情况下 分割最近的一次加倍的ks的上限
+ks_dem_1_1=0.8  # top_block "True"情况下 分割最近的一次加倍的ks的下限
+ks_dem_2 = 1.8  #  top_block "True"情况下 分割最近的一次加倍的ks的上限
+ks_dem_2_2= 1.2 #  top_block "True"情况下 分割最近的一次加倍的ks的下限
+savefile= 'graph39_11.png'   # 写入最后产生的图片路径
