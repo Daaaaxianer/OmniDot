@@ -9,28 +9,51 @@ from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 import math
-
+import toml
 date_norm="False"     #  "False"   "True"  是否归一化   "False" 不进行归一化 "True" 进行归一化
 Max_date= "True"     #  "MAX"   "True"  最大值设置   "MAX"是理论完美匹配的得分 "True" 实际最大匹配的得分
-A_dna= 25     # 20-30  基准窗口常数
-J_dna= 0.22     # 0.15-0.35 谨慎程度
-B_dna=-8        # -3 至 -10  补偿强度
-C_dna= 200      #150-300    补偿饱和点
-A_protein= 15     # 12-18 基准窗口常数
-J_protein= 0.28     # 0.15-0.35 谨慎程度
-B_protein=-5        # -3 至 -10  补偿强度
-C_protein= 100      #50-150 补偿饱和点
-figs="False"    # "False"  "True" 图像显示时是否使用真实比例
+A_dna = 25     # 20-30  基准窗口常数
+J_dna = 0.22     # 0.15-0.35 谨慎程度
+B_dna =-8        # -3 至 -10  补偿强度
+C_dna = 200      #150-300    补偿饱和点
 
+A_protein = 15     # 12-18 基准窗口常数
+J_protein = 0.28     # 0.15-0.35 谨慎程度
+B_protein =-5        # -3 至 -10  补偿强度
+C_protein = 100      #50-150 补偿饱和点
+figs="False"    # "False"  "True" 图像显示时是否使用真实比例
 min_prop="True"     # "False"  "True" 图像显示时是否限制下限
 min_props = 0     # min_prop="True" 时，下限为多少
-
-#window_size_dna = 29
-#window_size_protein=19
 Matrix_dna="BLASTN"     #选择dna矩阵 "BLASTN","TRANS","NUC.4.2"
 Matrix_protein="PAM250" #选择蛋白质矩阵 "BLOSUM62" ,"BLOSUM80","BLOSUM30","PAM250","PAM120","PAM30"
 show_leng_dna=500       #设置标签的分割
 show_leng_protein=100   #设置标签的分割
+
+date_1 = "1.pep"
+date_2 = "2.pep"
+out_part_date_1 = "1.2pep_seq"
+out_part_date_2 = "1.2pep_sco"
+out_part_date_3 = "1.2pep_pro"
+savefile = "output_pep.png"
+
+current_vars=['date_norm','Max_date','A_dna','J_dna','B_dna','C_dna','A_protein','J_protein','B_protein',
+              'C_protein','figs','min_prop','min_props','Matrix_dna','Matrix_protein','show_leng_dna','show_leng_protein',
+              'date_1','date_2','out_part_date_1','out_part_date_2','out_part_date_3','savefile']
+
+try:
+    # 加载TOML配置文件
+    with open('config.toml', "r", encoding="utf-8") as f:
+        config = toml.load(f)
+    for var_name in current_vars:# 遍历所有需要检查的变量
+        if var_name in config:
+            globals()[var_name] = config[var_name]
+except FileNotFoundError:
+    print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
+except Exception as e:
+    print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
+    print("⚠ 将使用默认配置继续运行")
+
+
 dna_tag="bp"
 protein_tag="aa"
 dna = set('ATCGN')
@@ -75,13 +98,13 @@ def no_r_max(Matrix):
 
     return matrix_array.max()
 
-record_1 = next(SeqIO.parse(r"C:\Users\32097\Desktop\Dotter_new\2.1.1.82.pep", "fasta"))
+record_1 = next(SeqIO.parse(date_1, "fasta"))
 #读取序列
 record_1.seq = Seq(str(record_1.seq).replace('-', '').replace('X', '').replace('*', ''))
 leng_x=len(record_1.seq)
 name_1=record_1.id
 #清理序列seq中的特殊字符
-record_2 = next(SeqIO.parse(r"C:\Users\32097\Desktop\Dotter_new\3.2.2.87.pep", "fasta"))
+record_2 = next(SeqIO.parse(date_2, "fasta"))
 #读取序列
 record_2.seq = Seq(str(record_2.seq).replace('-', '').replace('X', '').replace('*', ''))
 leng_y=len(record_2.seq)
@@ -500,11 +523,10 @@ if seqs=="protein" or seqs=="dna":
     ax2.set_yticks(ax2_ticks)
     ax2.set_yticklabels(ax2_ticks)
     #ax2.invert_yaxis()     # 反转y轴方向
-    df_1.to_csv(r"C:\Users\32097\Desktop\Dotter_new\3.2.87.2cds_seq", sep='\t', index=False, encoding='utf-8')
-    df_2.to_csv(r"C:\Users\32097\Desktop\Dotter_new\3.2.87.2cds_sco", sep='\t', index=True, encoding='utf-8')
+    df_1.to_csv(out_part_date_1, sep='\t', index=False, encoding='utf-8')
+    df_2.to_csv(out_part_date_2, sep='\t', index=True, encoding='utf-8')
     if date_norm == "True":
-        df_3.to_csv(r"C:\Users\32097\Desktop\Dotter_new\3.2.87.2cds_pro", sep='\t', index=True, encoding='utf-8')
-    savefile = r"C:\Users\32097\Desktop\Dotter_new\3.2.87.2cds_t.png"
+        df_3.to_csv(out_part_date_3, sep='\t', index=True, encoding='utf-8')
     plt.savefig(savefile, dpi=1000, format='png', bbox_inches='tight')
     plt.close()
     # plt.show()
