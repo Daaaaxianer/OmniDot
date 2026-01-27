@@ -1,0 +1,11 @@
+# config.toml（标准格式）
+new_chr = 1
+chunk_size = 2000   # 每个片段的长度
+start = 20000000   #具体的数字或"start"
+end = 30000000      #具体的数字或"end"
+date_1 = "chr.fa"
+out_part_date_1 = "chr.part.fa"
+out_part_date_2 = "alignment_part.sam"
+out_part_date_3 = "output_part.csv"
+savefile = "output_part.csv.png"
+pos = "bot"

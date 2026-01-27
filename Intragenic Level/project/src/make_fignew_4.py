@@ -5,10 +5,26 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.colors as mcolors
 from matplotlib.cm import ScalarMappable
-
+out_part_date_3='output_part.csv'
+savefile ="output_part.csv4.png"
 pos = "bot"     #"bot" 底部	"left" 左侧 	"right" 右侧	"top" 顶部
+
+current_vars=['out_part_date_3','savefile','pos']
+try:
+    # 加载TOML配置文件
+    with open('config.toml', "r", encoding="utf-8") as f:
+        config = toml.load(f)
+    for var_name in current_vars:# 遍历所有需要检查的变量
+        if var_name in config:
+            globals()[var_name] = config[var_name]
+except FileNotFoundError:
+    print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
+except Exception as e:
+    print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
+    print("⚠ 将使用默认配置继续运行")
+
 date = pd.read_csv(
-    r"D:\Python_cod\blast例子\Data\output_part1.csv",
+    out_part_date_3,
     sep='\t',
     header=0,
 )
@@ -165,7 +181,7 @@ if pos == "left":
 ax_dot.set_xticks([])
 ax_dot.set_yticks([])
 
-savefile = r"D:\Python_cod\blast例子\Data\output_part.csv3.png"
+
 plt.savefig(savefile, dpi=1000, format='png', bbox_inches='tight')
 plt.close()
 # plt.show()

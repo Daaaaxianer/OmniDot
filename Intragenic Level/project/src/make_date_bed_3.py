@@ -4,7 +4,23 @@ import sys
 import re
 import pysam
 import pandas as pd
-samfile = pysam.AlignmentFile("alignment_part.sam", threads=4)
+out_part_date_2="alignment_part.sam"
+out_part_date_3='output_part.csv'
+current_vars=['out_part_date_2','out_part_date_3']
+try:
+    # 加载TOML配置文件
+    with open('config.toml', "r", encoding="utf-8") as f:
+        config = toml.load(f)
+    for var_name in current_vars:# 遍历所有需要检查的变量
+        if var_name in config:
+            globals()[var_name] = config[var_name]
+except FileNotFoundError:
+    print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
+except Exception as e:
+    print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
+    print("⚠ 将使用默认配置继续运行")
+
+samfile = pysam.AlignmentFile(out_part_date_2, threads=4)
 data_list = []
 for read in samfile:
     if read.flag == 4:

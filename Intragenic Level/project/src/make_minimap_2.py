@@ -2,6 +2,24 @@ import subprocess
 from pathlib import Path
 import pandas as pd
 
+out_part_date_1=fr"chr.part.fa"
+out_part_date_2="alignment_part.sam"
+
+current_vars=['out_part_date_1','out_part_date_2']
+try:
+    # 加载TOML配置文件
+    with open('config.toml', "r", encoding="utf-8") as f:
+        config = toml.load(f)
+    for var_name in current_vars:# 遍历所有需要检查的变量
+        if var_name in config:
+            globals()[var_name] = config[var_name]
+except FileNotFoundError:
+    print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
+except Exception as e:
+    print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
+    print("⚠ 将使用默认配置继续运行")
+
+
 
 def run_minimap2_simple(minimap2_path, reference, query, output):
     """
@@ -44,9 +62,9 @@ def run_minimap2_simple(minimap2_path, reference, query, output):
 if __name__ == "__main__":
     result = run_minimap2_simple(
         "./../bin/minimap2-2.30_x64-linux/minimap2",
-        "chr1.part1.fa",
-        "chr1.part1.fa",
-        "alignment_part.sam"
+        out_part_date_1,
+        out_part_date_1,
+        out_part_date_2
     )
     if result:
         print("Alignment completed successfully!")

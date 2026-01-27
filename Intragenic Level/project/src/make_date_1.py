@@ -1,14 +1,35 @@
 import pandas as pd
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
+import toml
 new_chr=1
 chunk_size = 2000   # 每个片段的长度
 start = 20000000       #具体的数字或"start"
 end = 30000000   #具体的数字或"end"
-date=r"D:\Python_cod\blast例子\Data\pseudomolecules.fa"
-out_part_date=fr"D:\Python_cod\blast例子\Data\chr{new_chr}.part.fa"
+date_1=r"chr.fa"
+out_part_date_1=fr"chr.part.fa"
+current_vars=['new_chr','chunk_size','start','end','date_1','out_part_date_1']
+try:
+    # 加载TOML配置文件
+    with open('config.toml', "r", encoding="utf-8") as f:
+        config = toml.load(f)
+    for var_name in current_vars:# 遍历所有需要检查的变量
+        if var_name in config:
+            globals()[var_name] = config[var_name]
+except FileNotFoundError:
+    print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
+except Exception as e:
+    print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
+    print("⚠ 将使用默认配置继续运行")
+
+
+
+
+
+
+
 new_date=[]
-for gff3_lod in SeqIO.parse(date, "fasta"):
+for gff3_lod in SeqIO.parse(date_1, "fasta"):
     if gff3_lod.id ==f"chr{new_chr}" :
         if start=="start":
             start=0
@@ -26,4 +47,4 @@ for gff3_lod in SeqIO.parse(date, "fasta"):
                 description=''  # 设置description为空字符串
             )  # SeqRecord 建立一个SeqRecord对象
             new_date.append(gff3_new_record)
-SeqIO.write(new_date, out_part_date, "fasta")
+SeqIO.write(new_date, out_part_date_1, "fasta")
