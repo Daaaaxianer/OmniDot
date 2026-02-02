@@ -1,0 +1,3 @@
+[Config]
+config_1 = "Fragment"    #3种模式 "Chromosomal" "Fragment" "Intragenic"
+config_2 = "blast"          # 当config_1 ="Chromosomal" 时需要写  哪一个板块 "blast","Collinearity","blast_blast","Collinearity_Collinearity","blast_Collinearity"
