@@ -1,3 +1,4 @@
+[Fragment]
 # config.toml（标准格式）
 # 归一化设置
 date_norm = "False"     # "False" 不进行归一化，"True" 进行归一化
