@@ -1,3 +1,4 @@
+[Intragenic]
 # config.toml（标准格式）
 new_chr = 1
 chunk_size = 2000   # 每个片段的长度
