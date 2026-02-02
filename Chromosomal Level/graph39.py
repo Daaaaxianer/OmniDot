@@ -88,14 +88,33 @@ current_vars=['color_dates','gene_show','Collinearity_ks','Collinearity','blast_
               'name_1','name_2','name_3','name_4','collinearity_ks_mod','Ks','ks_mod','name_id','N','NSD','Distance','half','block','top_block','ks_dem_1','ks_dem_1_1','ks_dem_2',
               'ks_dem_2_2','pos','mod_show','bin_sizes','color_date','wide','longs','name_1_4','name_2_4','Collinearity_2','Collinearity_ks_2','blast_name_2','blast_gff_1_2',
               'blast_gff_2_2','blast_lens_1_2','blast_lens_2_2','posd','savefile']
+config_1 = "Chromosomal"    #3种模式 "Chromosomal" "Fragment" "Intragenic"
+config_2 = "blast"          # 在"Chromosomal" 下的哪一个板块 "blast","Collinearity","blast_blast","Collinearity_Collinearity","blast_Collinearity"
+
+current_vard=['config_1','config_2']
+try:
+    # 加载TOML配置文件
+    with open('../config.toml', "r", encoding="utf-8") as f:
+        config = toml.load(f)
+    if "Config" in config:
+        intragenic_config = config["Config"]
+        for var_name in current_vard:# 遍历所有需要检查的变量
+            if var_name in intragenic_config:
+                globals()[var_name] = intragenic_config[var_name]
+except FileNotFoundError:
+    print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
+except Exception as e:
+    print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
+    print("⚠ 将使用默认配置继续运行")
+
 try:
     # 加载TOML配置文件
     with open('config.toml', "r", encoding="utf-8") as f:
         config = toml.load(f)
     updated = 0# 统计更新情况
     missing = 0
-    if 'blast_Collinearity' in config:
-        new_config = config['blast_Collinearity']
+    if config_2 in config:
+        new_config = config[config_2]
     else:
         print(f"❌ 错误: 配置文件加载失败 ")
     for var_name in current_vars:# 遍历所有需要检查的变量
