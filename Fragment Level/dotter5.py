@@ -36,24 +36,46 @@ out_part_date_2 = "1.2pep_sco"
 out_part_date_3 = "1.2pep_pro"
 savefile = "output_pep.png"
 
-current_vars=['date_norm','Max_date','A_dna','J_dna','B_dna','C_dna','A_protein','J_protein','B_protein',
-              'C_protein','figs','min_prop','min_props','Matrix_dna','Matrix_protein','show_leng_dna','show_leng_protein',
-              'date_1','date_2','out_part_date_1','out_part_date_2','out_part_date_3','savefile']
+current_vars_1=['date_norm','Max_date','A_dna','J_dna','B_dna','C_dna','A_protein','J_protein','B_protein',
+              'C_protein','figs','min_prop','min_props','Matrix_dna','Matrix_protein','show_leng_dna','show_leng_protein',]
+current_vars_2=['date_1','date_2','out_part_date_1','out_part_date_2','out_part_date_3','savefile']
 
 try:
+    # 配置文件路径 - 根据实际情况调整
+    config_file_path = '../config.toml'  # 配置文件在上级目录
+    config_dir = os.path.dirname(os.path.abspath(config_file_path))
+
     # 加载TOML配置文件
-    with open('config.toml', "r", encoding="utf-8") as f:
+    with open(config_file_path, "r", encoding="utf-8") as f:
         config = toml.load(f)
+
     if "Fragment" in config:
         intragenic_config = config["Fragment"]
-        for var_name in current_vars:# 遍历所有需要检查的变量
+
+        # 先处理非路径变量
+        for var_name in current_vars_1:
             if var_name in intragenic_config:
                 globals()[var_name] = intragenic_config[var_name]
+
+        # 再处理路径变量
+        for var_name in current_vars_2:
+            if var_name in intragenic_config:
+                value = intragenic_config[var_name]  # 直接从配置文件获取
+                if isinstance(value, str):
+                    if not os.path.isabs(value):  # 相对路径
+                        # 转换为相对于配置文件目录的绝对路径
+                        value = os.path.join(config_dir, value)
+                globals()[var_name] = value
+
+        print("✅ 配置加载成功！")
+
 except FileNotFoundError:
     print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
 except Exception as e:
     print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
     print("⚠ 将使用默认配置继续运行")
+
+
 
 
 dna_tag="bp"
