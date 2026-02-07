@@ -8,14 +8,24 @@ out_part_date_2="alignment_part.sam"
 out_part_date_3='output_part.csv'
 current_vars=['out_part_date_2','out_part_date_3']
 try:
-    # 加载TOML配置文件
-    with open('config.toml', "r", encoding="utf-8") as f:
+    config_file_path = '../../../config.toml'
+    config_dir = os.path.dirname(os.path.abspath(config_file_path))
+
+    # 加载配置文件（在上级的上级目录）
+    with open(config_file_path, "r", encoding="utf-8") as f:
         config = toml.load(f)
+
     if "Intragenic" in config:
         intragenic_config = config["Intragenic"]
-        for var_name in current_vars:# 遍历所有需要检查的变量
+
+        for var_name in current_vars:
             if var_name in intragenic_config:
-                globals()[var_name] = intragenic_config[var_name]
+                value = intragenic_config[var_name]  # 直接从配置文件获取
+                if isinstance(value, str):
+                    if not os.path.isabs(value):  # 相对路径
+                        value = os.path.join(config_dir, value)
+                globals()[var_name] = value  # 总是赋值
+
 except FileNotFoundError:
     print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
 except Exception as e:
