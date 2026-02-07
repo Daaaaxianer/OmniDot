@@ -61,13 +61,14 @@ pos = "bot_left"  # 显示在"bot_left" 左下   "bot_right" 右下  "top_left" 
 mod_show = "nan"  # "rate" "tree" "density" "nan"        collinearity情况下"rate" 显示基因的比例  "tree"  显示特定基因的名称  "density"显示基因的密度  "nan" 都不显示   blast情况下 "tree" "density"
 bin_sizes = 20  # "density"显示基因的密度  定义分箱大小  默认单位为百万
 color_date = "False"  # "False" "True"是否有显示基因名称的连接线的颜色文件       collinearity情况下     tree情况下
-color_dates = 'NAN'  # 写入"tree"下显示的基因名称对应颜色的文件路径     tree情况下
-rcolor_dates = 'NAN'
+
 wide = 400  # 显示的名称上下的距离差         collinearity情况下     tree情况下
 longs = 350  # 显示的名称左右的距离差         collinearity情况下     tree情况下
 name_1_4 = "NAN"  # 第1列的物种名称
 name_2_4 = "NAN"  # 第2列的物种名称
 posd = "bot_left"  # "bot_left"   "bot_right"
+
+color_dates = 'NAN'  # 写入"tree"下显示的基因名称对应颜色的文件路径     tree情况下
 Collinearity_ks = "NAN"
 Collinearity = "NAN"
 blast_name = "NAN"
@@ -84,10 +85,11 @@ blast_lens_1_2 ="NAN"
 blast_lens_2_2 = "NAN"
 gene_show = "NAN"
 savefile='NAN'
-current_vars=['color_dates','gene_show','Collinearity_ks','Collinearity','blast_name','blast_gff_1','blast_gff_2','blast_lens_1','blast_lens_2','mods','mod',
-              'name_1','name_2','name_3','name_4','collinearity_ks_mod','Ks','ks_mod','name_id','N','NSD','Distance','half','block','top_block','ks_dem_1','ks_dem_1_1','ks_dem_2',
-              'ks_dem_2_2','pos','mod_show','bin_sizes','color_date','wide','longs','name_1_4','name_2_4','Collinearity_2','Collinearity_ks_2','blast_name_2','blast_gff_1_2',
-              'blast_gff_2_2','blast_lens_1_2','blast_lens_2_2','posd','savefile']
+current_vars_1=['mods','mod','name_1','name_2','name_3','name_4','collinearity_ks_mod','Ks','ks_mod','name_id','N','NSD','Distance','half','block','top_block',
+                'ks_dem_1','ks_dem_1_1','ks_dem_2','ks_dem_2_2','pos','mod_show','bin_sizes','color_date','wide','longs','name_1_4','name_2_4','posd']
+current_vars_2=['color_dates','Collinearity_ks','Collinearity','blast_name','blast_gff_1','blast_gff_2','blast_lens_1','blast_lens_2','Collinearity_2',
+                'Collinearity_ks_2','blast_name_2','blast_gff_1_2','blast_gff_2_2','blast_lens_1_2','blast_lens_2_2','gene_show','savefile']
+
 config_1 = "Chromosomal"    #3种模式 "Chromosomal" "Fragment" "Intragenic"
 config_2 = "blast"          # 在"Chromosomal" 下的哪一个板块 "blast","Collinearity","blast_blast","Collinearity_Collinearity","blast_Collinearity"
 
@@ -108,8 +110,11 @@ except Exception as e:
     print("⚠ 将使用默认配置继续运行")
 
 try:
+    config_file_path = '../config.toml'
+    config_abs = os.path.abspath(config_file_path)
+    config_dir = os.path.dirname(config_abs)
     # 加载TOML配置文件
-    with open('config.toml', "r", encoding="utf-8") as f:
+    with open(config_abs, "r", encoding="utf-8") as f:
         config = toml.load(f)
     updated = 0# 统计更新情况
     missing = 0
@@ -117,17 +122,34 @@ try:
         new_config = config[config_2]
     else:
         print(f"❌ 错误: 配置文件加载失败 ")
-    for var_name in current_vars:# 遍历所有需要检查的变量
+        print("⚠ 将使用默认配置继续运行")
+        raise KeyError(f"配置段 '{config_2}' 不存在")
+    for var_name in current_vars_1:# 遍历所有需要检查的变量
         if var_name in new_config:# 更新全局变量
             globals()[var_name] = new_config[var_name]
             updated += 1
         else:
             missing += 1
+    for var_name in current_vars_2:
+        if var_name in new_config:
+            value = new_config[var_name]
+
+            # 如果是字符串且是相对路径
+            if isinstance(value, str) and not os.path.isabs(value):
+                # 转换为相对于配置文件目录的绝对路径
+                value = os.path.join(config_dir, value)
+
+            globals()[var_name] = value
+            updated += 1
+        else:
+            missing += 1
+
 except FileNotFoundError:
     print("⚠ 警告: 未找到 config.toml 文件，使用所有默认配置")
 except Exception as e:
     print(f"❌ 错误: 配置文件加载失败 - {str(e)}")
     print("⚠ 将使用默认配置继续运行")
+
 dot_mod_1 = dict(c='grey', s=0.7, alpha=0.8, marker='o', edgecolors=None, linewidths=0)  # 定义画blast图得到的点样式
 dot_mod_2 = dict(c='blue', s=0.7, alpha=0.8, marker='o', edgecolors=None, linewidths=0)  # 定义画blast图得到的点样式
 dot_mod_3 = dict(c='red', s=0.7, alpha=0.8, marker='o', edgecolors=None, linewidths=0)  # 定义画blast图得到的点样式
